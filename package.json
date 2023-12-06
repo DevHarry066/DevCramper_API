@@ -1,0 +1,19 @@
+{
+  "name": "devcramper_api",
+  "version": "1.0.0",
+  "description": "Dev Cramper API tutorial with Brad",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=production node server",
+    "dev":"nodemon server"
+  },
+  "author": "Hariom Sharma",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

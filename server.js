@@ -12,6 +12,8 @@ connectDB();
 
 const app = express();
 
+app.use(express.json());
+
 PORT = process.env.PORT || 3000;
 
 const server = app.listen(PORT, console.log(`App Running in ${process.env.NODE_ENV} on PORT ${PORT}`.yellow.bold));

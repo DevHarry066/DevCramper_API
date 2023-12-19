@@ -4,7 +4,7 @@ const bootcamps = require('./routes/routes');
 const morgan = require('morgan');
 const connectDB = require('../DevCramper_API/config/db');
 const colors = require('colors');
-
+const errorHandler = require('./middleware/error');
 //Load env variables
 dotenv.config({ path: './config/config.env' });
 
@@ -13,6 +13,8 @@ connectDB();
 const app = express();
 
 app.use(express.json());
+
+
 
 PORT = process.env.PORT || 3000;
 
@@ -26,7 +28,8 @@ const server = app.listen(PORT, console.log(`App Running in ${process.env.NODE_E
 //     process.exit(1);
 // });
 
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 
 app.use('/api/v1/bootcamp', bootcamps);
 
+app.use(errorHandler);

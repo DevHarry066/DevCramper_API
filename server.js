@@ -1,6 +1,7 @@
 const express = require('express')
 const dotenv = require('dotenv');
 const bootcamps = require('./routes/routes');
+const courses = require('./routes/courses');
 const morgan = require('morgan');
 const connectDB = require('../DevCramper_API/config/db');
 const colors = require('colors');
@@ -31,5 +32,6 @@ const server = app.listen(PORT, console.log(`App Running in ${process.env.NODE_E
 // app.use(morgan('dev'));
 
 app.use('/api/v1/bootcamp', bootcamps);
+app.use('/api/v1/courses', courses);
 
 app.use(errorHandler);

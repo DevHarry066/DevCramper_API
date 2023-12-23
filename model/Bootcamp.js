@@ -99,11 +99,28 @@ const BootcampsSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
+}, {
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
 
 BootcampsSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
+});
+
+//Depricated and not calling
+BootcampsSchema.pre('remove', { document: true, query: false }, async function (next) {
+  console.log(`Courses being removed from bootcamp ${this._id}`);
+  await this.model('Course').deleteMany({ bootcamp: this._id }, next);
+});
+
+//Reverse populate with virtual objects
+BootcampsSchema.virtual('courses', {
+  ref: 'Course',
+  foreignField: 'bootcamp',
+  localField: '_id',
+  justOne: false
 });
 
 module.exports = mongoose.model('Bootcamp', BootcampsSchema);

@@ -13,7 +13,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   const reqQuery = { ...req.query };
 
   //Fields to exclude
-  const removeFields = ['select', 'sort'];
+  const removeFields = ['select', 'sort', 'page', 'limit'];
 
   //Loop over all fields & remove fields from queryParameters
   removeFields.forEach(param => delete reqQuery[param]);
@@ -39,18 +39,47 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
     query = query.sort(sortBy);
   } else {
     //default sort by creation time
-    // query = query.sort({ createdAt: -1 });
+    query = query.sort({ createdAt: -1 });
   }
+
+  //Pagination
+  const page = parseInt(req.query.page, 10) || 1;
+  const limitPage = parseInt(req.query.limit, 10) || 25;
+  const startIndex = (page - 1) * limitPage;
+
+  query = query.skip(startIndex).limit(limitPage);
+
+  const endIndex = page * limitPage;
+
+  const total = await Bootcamp.countDocuments();
 
   //Finally send the query to the server
   const bootcamps = await query;
+
+  //Pagination object to result
+
+  const pagination = {};
+
+  if (endIndex < total) {
+    pagination.next = {
+      page: page + 1,
+      limit: limitPage
+    };
+  }
+
+  if (startIndex > 0) {
+    pagination.prev = {
+      page: page - 1,
+      limit: limitPage
+    };
+  }
 
   //Result from the server to the client
 
   if (!bootcamps) {
     return next(new ErrorResponse(`Bootcamps not found`, 400));
   }
-  res.status(200).json({ success: true, count: bootcamps.length, data: bootcamps });
+  res.status(200).json({ success: true, count: bootcamps.length, pagination: pagination, data: bootcamps });
 });
 
 // @desc Get Bootcamp

@@ -8,6 +8,8 @@ const connectDB = require('../DevCramper_API/config/db');
 const colors = require('colors');
 const errorHandler = require('./middleware/error');
 const fileUpload = require('express-fileupload');
+const auth = require('./routes/auth')
+
 //Load env variables
 dotenv.config({ path: './config/config.env' });
 
@@ -39,6 +41,7 @@ app.use(fileUpload());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/api/v1/auth', auth);
 app.use('/api/v1/bootcamp', bootcamps);
 app.use('/api/v1/courses', courses);
 

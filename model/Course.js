@@ -1,3 +1,4 @@
+const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 
 const CourseSchema = new mongoose.Schema({

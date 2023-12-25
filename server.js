@@ -8,6 +8,7 @@ const connectDB = require('../DevCramper_API/config/db');
 const colors = require('colors');
 const errorHandler = require('./middleware/error');
 const fileUpload = require('express-fileupload');
+const cookieParser = require('cookie-parser');
 const auth = require('./routes/auth')
 
 //Load env variables
@@ -37,6 +38,8 @@ const server = app.listen(PORT, console.log(`App Running in ${process.env.NODE_E
 
 app.use(fileUpload());
 
+//Set cookie
+app.use(cookieParser());
 //Set static folder
 
 app.use(express.static(path.join(__dirname, 'public')));

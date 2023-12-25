@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-
+const advancedResults = require('../middleware/advancedResults');
+const Bootcamp = require('../model/Bootcamp');
 
 //Other routes require
 const courseRouter = require('./courses');
@@ -11,7 +12,7 @@ router.use('/:bootcampId/courses', courseRouter);
 const { getBootcamps, getBootcamp, createBootcamp, updateBootcamp, deleteBootcamps, getBootcampsInRadius, bootcampPhotoUpload } =
     require('../controllers/bootcamps')
 
-router.route('/').get(getBootcamps).post(createBootcamp);
+router.route('/').get(advancedResults(Bootcamp, 'courses'), getBootcamps).post(createBootcamp);
 
 router.route('/radius/:zipCode/:distance').get(getBootcampsInRadius);
 

@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express')
 const dotenv = require('dotenv');
 const bootcamps = require('./routes/routes');
@@ -6,6 +7,7 @@ const morgan = require('morgan');
 const connectDB = require('../DevCramper_API/config/db');
 const colors = require('colors');
 const errorHandler = require('./middleware/error');
+const fileUpload = require('express-fileupload');
 //Load env variables
 dotenv.config({ path: './config/config.env' });
 
@@ -30,6 +32,12 @@ const server = app.listen(PORT, console.log(`App Running in ${process.env.NODE_E
 // });
 
 // app.use(morgan('dev'));
+
+app.use(fileUpload());
+
+//Set static folder
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/v1/bootcamp', bootcamps);
 app.use('/api/v1/courses', courses);

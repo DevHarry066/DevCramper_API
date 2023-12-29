@@ -98,11 +98,17 @@ const BootcampsSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
-}, {
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true }
-});
+  },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: [true]
+  },
+},
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+  });
 
 BootcampsSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
